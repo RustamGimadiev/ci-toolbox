@@ -1,0 +1,23 @@
+image: qidah/dev:latest
+
+services:
+  - name: docker:dind
+  
+variables:
+  DOCKER_HOST: "tcp://localhost:2375"
+
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - 'docker build -t qidah/base:latest images/base'
+    - 'docker build -t qidah/dev:latest images/dev'
+    - 'docker build -t qidah/inf:latest images/inf'
+    - 'docker push qidah/base:latest'
+    - 'docker push qidah/dev:latest'
+    - 'docker push qidah/inf:latest'
+  only:
+    refs:
+      - master
